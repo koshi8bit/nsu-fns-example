@@ -1,0 +1,8 @@
+.env
+pic/
+.idea/
+__pycache__/
+app.log
+receipts.txt
+logs/
+sheets/creds.json
