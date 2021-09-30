@@ -15,8 +15,8 @@ if __name__ == '__main__':
     res = request_to_fns(qr_code)
     print(res)
 
-    bill_file = open('bill.json', "w")
-    bill_file.write(res)
-    bill_file.close()
+    with open('bill.json', "w", encoding="utf-8") as f:
+        f.write(res)
+        f.close()
 
 

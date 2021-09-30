@@ -2,7 +2,7 @@
     "status": 2,
     "id": "6151653bef3efbf0512c2086",
     "kind": "kkt",
-    "createdAt": "2021-09-30T12:58:11+03:00",
+    "createdAt": "2021-09-30T13:04:22+03:00",
     "statusDescription": {},
     "qr": "t=20210506T1539&s=263.50&fn=9960440300049147&i=36086&fp=3305237468&n=1",
     "operation": {
@@ -43,7 +43,7 @@
                 "fnsUrl": "www.nalog.ru",
                 "items": [
                     {
-                        "name": "9067 «‡ÊË„‡ÎÍ‡ Cricket Standart",
+                        "name": "9067 –ó–∞–∂–∏–≥–∞–ª–∫–∞ Cricket Standart",
                         "nds": 1,
                         "ndsSum": 733,
                         "paymentType": 4,
@@ -53,7 +53,7 @@
                         "sum": 4400
                     },
                     {
-                        "name": "30169 ◊ËÔÒ˚ Pringles ¡ÂÍÓÌ 165„",
+                        "name": "30169 –ß–∏–ø—Å—ã Pringles –ë–µ–∫–æ–Ω 165–≥",
                         "nds": 1,
                         "ndsSum": 2483,
                         "paymentType": 4,
@@ -63,7 +63,7 @@
                         "sum": 14900
                     },
                     {
-                        "name": "25463 œ‡ÍÂÚ Ã‡ÈÍ‡ 28*50 14ÏÍÏ",
+                        "name": "25463 –ü–∞–∫–µ—Ç –ú–∞–π–∫–∞ 28*50 14–º–∫–º",
                         "nds": 1,
                         "ndsSum": 25,
                         "paymentType": 4,
@@ -73,7 +73,7 @@
                         "sum": 150
                     },
                     {
-                        "name": "4740 —ÓÍ ƒÓ·˚È ﬂ·ÎÓÍÓ 1.0 Ú/Ô",
+                        "name": "4740 –°–æ–∫ –î–æ–±—Ä—ã–π –Ø–±–ª–æ–∫–æ 1.0 —Ç/–ø",
                         "nds": 1,
                         "ndsSum": 1150,
                         "paymentType": 4,
@@ -86,28 +86,28 @@
                 "kktRegId": "0003988533004837    ",
                 "nds18": 4391,
                 "operationType": 1,
-                "operator": " »—À»÷»Õ¿ »–»Õ¿ ¿À≈ —¿Õƒ–Œ¬Õ¿",
+                "operator": "–ö–ò–°–õ–ò–¶–ò–ù–ê –ò–†–ò–ù–ê –ê–õ–ï–ö–°–ê–ù–î–†–û–í–ù–ê",
                 "operatorInn": "544601788424",
                 "prepaidSum": 0,
                 "provisionSum": 0,
                 "requestNumber": 142,
-                "retailPlace": "—ÛÔÂÏ‡ÍÂÚ “÷",
-                "retailPlaceAddress": "630090, „.ÕÓ‚ÓÒË·ËÒÍ, ÛÎ.»Î¸Ë˜‡, ‰.6",
+                "retailPlace": "–°—É–ø–µ—Ä–º–∞—Ä–∫–µ—Ç –¢–¶",
+                "retailPlaceAddress": "630090, –≥.–ù–æ–≤–æ—Å–∏–±–∏—Ä—Å–∫, —É–ª.–ò–ª—å–∏—á–∞, –¥.6",
                 "shiftNumber": 139,
                 "taxationType": 1,
                 "appliedTaxationType": 1,
                 "totalSum": 26350,
-                "user": "ŒŒŒ \"“÷\"",
+                "user": "–û–û–û \"–¢–¶\"",
                 "userInn": "5407973235  "
             }
         }
     },
     "organization": {
-        "name": "ŒŒŒ \"“÷\"",
+        "name": "–û–û–û \"–¢–¶\"",
         "inn": "5407973235"
     },
     "seller": {
-        "name": "ŒŒŒ \"“÷\"",
+        "name": "–û–û–û \"–¢–¶\"",
         "inn": "5407973235"
     }
 }
