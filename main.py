@@ -11,8 +11,12 @@ def request_to_fns(qr_code):
 
 
 if __name__ == '__main__':
-    qr_code = 't=20210918T1904&s=110993.00&fn=9280440301369575&i=3273&fp=1326101455&n=1'
+    qr_code = 't=20210506T153900&s=263.50&fn=9960440300049147&i=36086&fp=3305237468&n=1'
     res = request_to_fns(qr_code)
     print(res)
+
+    bill_file = open('bill.json', "a")
+    bill_file.write(res)
+    bill_file.close()
 
 
