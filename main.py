@@ -1,5 +1,4 @@
 import json
-from dotenv import load_dotenv
 from nalog_python import NalogRuPython
 
 
@@ -18,5 +17,3 @@ if __name__ == '__main__':
     with open('bill.json', "w", encoding="utf-8") as f:
         f.write(res)
         f.close()
-
-
