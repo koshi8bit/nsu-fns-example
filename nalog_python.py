@@ -3,8 +3,8 @@ import json
 
 import requests
 
-from for_nalog.j_work import Jwork
-from for_nalog.my_error import My_error
+from j_work import Jwork
+from my_error import My_error
 
 
 class NalogRuPython:
@@ -81,7 +81,7 @@ class NalogRuPython:
                 'User-Agent': self.USER_AGENT,
             }
             resp = requests.post(url, json=payload, headers=headers)
-            if resp.status_code == 200:
+            if resp.status_code != 200:
                 raise My_error(3)
             return resp.json()["id"]
 
