@@ -1,20 +1,22 @@
+import copy
 from threading import Thread, Lock
 from flask import Flask, jsonify, abort, request
 import logging
 import threading
 import re
-from datetime import datetime
 import os
 from flask import Flask, jsonify
 from dotenv import load_dotenv
 from nalog_python import NalogRuPython
 import requests
 import json
+import datetime
 
 app = Flask(__name__)
 
-results = []
+results = {}
 mutex = Lock()
+
 
 @app.route('/HMC/qr', methods=['POST'])
 def get_task():
@@ -25,12 +27,13 @@ def get_task():
         logging.error(f'422')
         return jsonify({'status': 'Unprocessable Entity'}), 422
     global results
-    global mutex 
+    global mutex
     mutex.acquire()
-    results.append([request.json["id"], request.json["qr"]])    
+    results[request.json["id"]] = request.json["qr"]
     mutex.release()
     logging.info(f'incoming.. id={request.json["id"]}; qr={request.json["qr"]}')
     return jsonify({'status': 'Ok'}), 200
+
 
 def request_to_fns(qr_code):
     client = NalogRuPython()
@@ -38,13 +41,14 @@ def request_to_fns(qr_code):
     answer = str(json.dumps(ticket, indent=4, ensure_ascii=False))
     return answer
 
+
 def back_url():
     env_var = os.getenv("URL_TO_BACK")
     if not env_var:
         logging.error("Empty url")
-#        raise ValueError('Variable "URL_TO_BACK" is not set')
+        raise ValueError('Variable "URL_TO_BACK" is not set')
 
-    res =  f'{env_var}hmc/api/v1/fns/qr-code-response'
+    res = f'{env_var}hmc/api/v1/fns/qr-code-response'
     logging.info(f'url = {res}')
     print(f'url = {res}')
     return res
@@ -57,25 +61,51 @@ def validate_qr(qr_code):
         return True
     return False
 
-def start_timer():
-    threading.Timer(5, timer_callback).start()
+
+def start_timer(long_wait=False):
+    if not long_wait:
+        threading.Timer(5, timer_callback).start()
+    else:
+        now = datetime.datetime.now()
+        clear_requests = copy.deepcopy(now)
+        clear_requests = clear_requests.replace(hour=4, minute=0, second=0)
+
+        if not 0 <= now.hour <= 3:
+            clear_requests += datetime.timedelta(days=1)
+
+        remaining = clear_requests - now
+
+        logging.warning(f'long start_timer {remaining.total_seconds() / 3600:.3} hours')
+        threading.Timer(remaining.total_seconds(), timer_callback).start()
+
 
 def timer_callback():
     global mutex
+    long_wait = False
+    to_delete = []
     with mutex:
         global results
         logging.info(f'timer_callback {len(results)}')
         global back_url
-        for pair in results:
+        for receipt_id in results:
+            qr_code = results[receipt_id]
             try:
                 client = NalogRuPython()
-                ticket = client.get_ticket(pair[1])
+                ticket = client.get_ticket(qr_code)
                 logging.info('ticket ready')
-                ret = dict({'id': pair[0], "receipt": ticket, 'status': 'OK'})
+                ret = dict({'id': receipt_id, "receipt": ticket, 'status': 'OK'})
+                to_delete.append(receipt_id)
+
+            except IOError as ex:
+                # except json.decoder.JSONDecodeError as ex:
+                if str(ex) == 'Too Many Requests':
+                    long_wait = True
+                    break
 
             except Exception as ex:
-                ret = dict({'id': pair[0], "receipt": '', 'status': 'ERROR'})
-                logging.error('try exc')
+                # ret = dict({'id': receipt_id, "receipt": '', 'status': 'ERROR'})
+                logging.error('timer_callback try exc')
+                break
 
             resp = requests.post(back_url, json=ret)
             # logging.info(str(json.dumps(ticket, indent=4, ensure_ascii=False)))
@@ -86,8 +116,11 @@ def timer_callback():
             logging.info(f'resp.status_code: {str(resp.status_code)}')
         #    logging.info(str(json.dumps(resp.json(), indent=4, ensure_ascii=False)))
 
-        results.clear()
-        start_timer()
+        for elem in to_delete:
+            del results[elem]
+
+        start_timer(long_wait)
+
 
 if __name__ == '__main__':
     logging.basicConfig(level=logging.NOTSET, format='%(asctime)s - %(levelname)s - %(message)s',
