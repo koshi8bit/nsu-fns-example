@@ -64,7 +64,7 @@ class NalogRuPython:
         try:
             self.__session_id = resp.json()['sessionId']
         except Exception as e:
-            raise self.FnsError(resp.status_code, f"No sessionId found. REST error: {resp.reason}", resp.json())
+            raise self.FnsError(resp.status_code, f"No sessionId found. \n\nstr(e): {str(e)}\n\nREST error: {resp.reason}", resp.json())
             # raise ValueError(f'Ошибка ФНС. \n{str(e)}\n\nstatus_code={resp.status_code}\nДамп json:\n{str(resp)}')  # resp.json()
 
     def _get_ticket_id(self, qr: str) -> str:
