@@ -14,6 +14,15 @@ class NalogRuPython:
     USER_AGENT = 'billchecker/2.9.0 (iPhone; iOS 13.6; Scale/2.00)'
     ACCEPT_LANGUAGE = 'ru-RU;q=1, en-US;q=0.9'
 
+    class FnsError(Exception):
+        def __init__(self, status: int, reason: str, json_: str):
+            self.status = status
+            self.reason = reason
+            self.json = json_
+
+        def __str__(self):
+            return f"ФНС вернул ошибку {self.status}. Причина: {self.reason}"
+
     def __init__(self):
         load_dotenv()  # read environments from .env file
         self.__session_id = None
@@ -47,10 +56,16 @@ class NalogRuPython:
         }
 
         resp = requests.post(url, json=payload, headers=headers)
+
+        if resp.status_code != 200:
+            raise self.FnsError(resp.status_code, resp.reason, resp.json())
+
+        # print('debug', payload, headers, str(resp), resp.status_code)
         try:
             self.__session_id = resp.json()['sessionId']
         except Exception as e:
-            raise ValueError("Ошибка ФНС. Дамп json\n" + str(resp.json()))
+            raise self.FnsError(resp.status_code, f"No sessionId found. REST error: {resp.reason}", resp.json())
+            # raise ValueError(f'Ошибка ФНС. \n{str(e)}\n\nstatus_code={resp.status_code}\nДамп json:\n{str(resp)}')  # resp.json()
 
     def _get_ticket_id(self, qr: str) -> str:
         """
